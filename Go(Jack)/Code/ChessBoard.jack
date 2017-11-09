@@ -1,0 +1,241 @@
+class ChessBoard {
+	field int X0, Y0;
+	field int LEN;
+	field int Size;
+	field int Blocklen;
+	field int Rcircle;
+
+	field Array Grid;
+	
+	field int ClickX, ClickY;
+	field int NextPiece;
+
+	field Array Stack;
+	field int top;
+
+	field int cnt;
+
+	method void DisplayHint() {
+		var int x, y;
+		let x = X0 / 2;
+		let y = Y0 + (9 * LEN);
+
+		do Screen.setColor(true);
+		do Screen.drawCircle(x, y, 10);
+		
+		if (NextPiece = 1) {
+			do Screen.setColor(false);
+			do Screen.drawCircle(x, y, 9);
+		}
+		return ;
+	}
+
+	method void DisplayClick() {
+		var int x, y;
+		let x = X0 + (ClickX * LEN);
+		let y = Y0 + (ClickY * LEN);
+		
+		do Screen.setColor(true);
+		do Screen.drawRectangle(x - Blocklen, y - Blocklen, x + Blocklen, y + Blocklen);
+
+		return ;
+	}
+
+	method void DisplayPiece(int id) {
+		var int x, y, Xcenter, Ycenter;
+		var int i, j;
+		var int linelen;
+		var int ux, dx, ly, ry;
+
+		let x = id / Size;
+		let y = id - (x * Size);
+		let Xcenter = X0 + (x * LEN);
+		let Ycenter = Y0 + (y * LEN);
+
+		do Screen.setColor(false);
+		if (id = (ClickX * Size + ClickY)) {
+			if (~(Grid[id] = 1)) {
+				do Screen.drawRectangle(Xcenter - Blocklen, Ycenter - Blocklen, Xcenter + Blocklen, Ycenter + Blocklen);
+			}
+			else {
+				do Screen.drawRectangle(Xcenter - Blocklen, Ycenter - Blocklen, Xcenter - Blocklen + 1, Ycenter - Blocklen + 1);
+				do Screen.drawRectangle(Xcenter + Blocklen - 1, Ycenter - Blocklen, Xcenter + Blocklen, Ycenter - Blocklen + 1);
+				do Screen.drawRectangle(Xcenter - Blocklen, Ycenter + Blocklen - 1, Xcenter - Blocklen + 1, Ycenter + Blocklen);
+				do Screen.drawRectangle(Xcenter + Blocklen - 1, Ycenter + Blocklen - 1, Xcenter + Blocklen, Ycenter + Blocklen);
+			}
+		}
+		if (~(Grid[id] = 1)) {
+			do Screen.drawCircle(Xcenter, Ycenter, Rcircle);
+		}
+
+		let linelen = Math.max(Blocklen, Rcircle);
+		do Screen.setColor(true);
+
+		if (Grid[id] = 0) {
+			do Screen.setColor(true);
+			do Screen.drawCircle(Xcenter, Ycenter, Rcircle);
+			return ;
+		}
+
+		if (x = 0) { let ux = Xcenter; }
+		else { let ux = Xcenter - linelen; }
+		if (y = 0) { let ly = Ycenter; }
+		else { let ly = Ycenter - linelen; }
+		if (x = (Size - 1)) { let dx = Xcenter; }
+		else { let dx = Xcenter + linelen; }
+		if (y = (Size - 1)) { let ry = Ycenter; }
+		else { let ry = Ycenter + linelen; }
+
+		if (Grid[id] = -1) {
+			do Screen.drawLine(ux, Ycenter, dx, Ycenter);
+			do Screen.drawLine(Xcenter, ly, Xcenter, ry);
+	
+			if (((x = 3) | (x = 9) | (x = 15)) & ((y = 3) | (y = 9) | (y = 15))) {
+				do Screen.drawCircle(Xcenter, Ycenter, 3);
+			}
+		}
+
+		if (Grid[id] = 1) {
+			do Screen.setColor(true);
+			do Screen.drawCircle(Xcenter, Ycenter, Rcircle);
+			do Screen.setColor(false);
+			do Screen.drawCircle(Xcenter, Ycenter, Rcircle - 1);
+		}
+		return ;
+	}
+
+	method void Display() {
+		let cnt = cnt + 1;
+		if (cnt > 599) {
+			if (cnt = 600) {
+				do DisplayPiece(ClickX * Size + ClickY);
+			}
+			if (cnt > 19999) {
+				let cnt = 0;
+			}
+		}
+		else {
+			do DisplayClick();
+		}
+		return ;
+	}
+
+	method void PlacePiece() {
+		var int id;
+		let id = ClickX * Size + ClickY;
+
+		if (Grid[id] = -1) {
+			let Stack[top] = id;
+			let top = top + 1;
+
+			let Grid[id] = NextPiece;
+			let NextPiece = 1 - NextPiece;
+			do DisplayPiece(id);
+			do DisplayHint();
+		}
+		return ;
+	}
+
+	method void Withdraw() {
+		if (top > 0) {
+			let Grid[Stack[top - 1]] = -1;
+			do DisplayPiece(Stack[top - 1]);
+			let NextPiece = 1 - NextPiece;
+			let top = top - 1;
+			do DisplayHint();
+		}
+		return ;
+	}
+
+	method void MoveClick(int way) {
+		let cnt = -1;
+		do DisplayPiece(ClickX * Size + ClickY);
+
+		if (way = 3) {
+			if (ClickX > 0) {
+				let ClickX = ClickX - 1;
+			}
+		}
+
+		if (way = 4) {
+			if (ClickX < (Size - 1)) {
+				let ClickX = ClickX + 1;
+			}
+		}
+
+		if (way = 1) {
+			if (ClickY > 0) {
+				let ClickY = ClickY - 1;
+			}
+		}
+
+		if (way = 2) {
+			if (ClickY < (Size - 1)) {
+				let ClickY = ClickY + 1;
+			}
+		}
+		return ;
+	}
+
+	method void InitChessBoard() {
+		var int i, j;
+
+		do Screen.clearScreen();
+
+		let top = 0;
+		let NextPiece = 0;
+		do DisplayHint();
+		let cnt = 0;
+
+		do Screen.setColor(true);
+
+		let i = 0;
+		while (i < Size) {
+			do Screen.drawLine(X0 + (i * LEN), Y0, X0 + (i * LEN), Y0 + (LEN * (Size - 1)));
+			let i = i + 1;
+		}
+		let i = 0;
+		while (i < Size) {
+			do Screen.drawLine(X0, Y0 + (i * LEN), X0 + (LEN * (Size - 1)), Y0 + (i * LEN));
+			let i = i + 1;
+		}
+
+		let i = 0;
+		while (i < (Size * Size)) {
+			let Grid[i] = -1;
+			let i = i + 1;
+		}
+
+		let i = 3;
+		while (i < 16) {
+			let j = 3;
+			while (j < 16) {
+				do DisplayPiece(i * Size + j);
+				let j = j + 6;
+			}
+			let i = i + 6;
+		}
+
+		return ;
+	}
+
+	constructor ChessBoard init() {
+		let X0 = 125;
+		let Y0 = 9;
+		let LEN = 13;
+		let Size = 19;
+		let Rcircle = 6;
+		let Blocklen = 5;
+		let cnt = 0;
+
+		let Grid = Array.new(Size * Size);
+		let Stack = Array.new(Size * Size);
+		do InitChessBoard();
+		
+		do DisplayPiece(0);
+		let ClickX = 9;
+		let ClickY = 9;
+
+        return this;
+    }
+}
