@@ -219,7 +219,7 @@ class ChessBoard {
 		while (i < (Size * Size)) {
 			let x = i / Size;
 			let y = i - (x * Size);
-			if ((Grid[i] = NextPiece) & (vis[i] = 0)) { do bfs(x, y); }
+			if ((Grid[i] = NextPiece) & (vis[i] = 0)) { do bfs(x, y, id); }
 			let i = i + 1;
 		}
 

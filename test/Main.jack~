@@ -9,7 +9,7 @@ class Main {
         var Array x;
         let x = Array.new(10);
 		let x[0] = Array.new(10);
-		let x[0][0] = 1;
+		let x[0,0] = 1;
         return;
     }
 }

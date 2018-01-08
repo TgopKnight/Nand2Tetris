@@ -1,0 +1,19 @@
+Jack语言
+	Jack语言是一种简单的，基于对象的语言。有过编程经验的读者必然会发现，Jack语言在语法风格上和Java语言非常相似，而本身的语法却比一般通用的许多高级语言，例如C++、Java等，要简单很多。然而尽管Jack非常简单，它却依然是一个图灵完备的语言。Jack语言和其它高级语言具有相同的计算能力，即一个通用图灵机的计算能力，换言之，其他高级语言可以实现的功能，Jack语言都可以在有限的空间和时间开销内实现。
+
+Jack language
+	Jack language is a simple, object-based language. If you used to have programming experience, you will find that Jack language has similar syntax style of Java language, but its syntax structure is much easier than many general high-level languages, such as C++, Java and so forth. But even if Jack is a simple language, it is still a Turing complete language. Jack language has the same computation ability as the other high-level languages, the computation ability of a universal turing machine. In other words, any functions that can be implemented by other high-level languages, can be implemented in finite time and space cost by Jack language.
+
+设计合约
+	在接下来的10-11章，我们将学习编写一个将Jack程序翻译成VM代码的编译器，而在12章开发基于Jack/Hack的操作系统，因此本章的学习目的在于让读者熟悉Jack语言的使用，以为后面的学习奠定坚实的基础。
+	在Nand2Tetris课程中我们的任务是实现一个以Jack语言开发的应用程序，而在这里我们将选择当下最热门的竞技游戏——围棋，作为我们的讲解内容。
+
+Design contract
+	In the next chapter 10 and 11, we will learn how to build a	compiler that translate Jack program into VM code, and develop an operate system based on Jack/Hack in chapter 12, so in this chapter our study objective is becoming familiar with Jack language, which lays a solid foundation for further study.
+	In the Nand2Tetris courses our task is to invent an application using Jack language, but here we choose currently the most famous competitive game, the game of Go, as the content of this course.
+
+围棋
+	围棋是一种策略性的两人棋类游戏，黑白双方在一个横纵各19条线交叉形成的361个格点上交替行棋，以围地多的一方获胜。一般情况下由于黑棋先行处于有利一方，因此人为规定下黑方在终局时要给白方让出一定的地以达到平衡。在9.4节我们将系统地介绍围棋规则以及如何使用Jack语言实现。
+
+The game of Go
+	The game of Go is a two-men strategy chess game, black and white players place the stones on 361 grids intersected by 19 rows and 19 columns by turns, the one who surrounds more grids win. Usually in artificial regulation, black player should give compensation to white one for balance because black one can play in sente with advantages. In chapter 9.4 we will formulate the rules of Go and how to implemented by Jack language.

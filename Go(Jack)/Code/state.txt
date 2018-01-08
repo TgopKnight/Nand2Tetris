@@ -1,0 +1,12 @@
+do Output.printString("This is a GoBoard simiulator implemented by Jack!");
+		do Output.println();
+		do Output.printString("Use direction arrows to control the Click(the black block).");
+		do Output.println();
+		do Output.printString("Use 'B' to remove last piece placed.");
+		do Output.println();
+		do Output.printString("Use 'R' to restart the game.");
+		do Output.println();
+		do Output.printString("Use 'Q' to quit.");
+		do Output.println();
+		do Output.printString("Have fun!");
+		do Output.println();
